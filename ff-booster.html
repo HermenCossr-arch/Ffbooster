@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF BOOST PRO - Iniciador Free Fire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap');
+
+  :root {
+    --ff-orange: #FF6B00;
+    --ff-yellow: #FFD100;
+    --ff-red: #FF1A1A;
+    --ff-dark: #0A0A0A;
+    --ff-darker: #050505;
+    --ff-card: #111111;
+    --ff-border: #2A2A2A;
+    --glow-orange: 0 0 20px rgba(255,107,0,0.5);
+    --glow-yellow: 0 0 20px rgba(255,209,0,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ff-darker);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,107,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,0,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 20px 0 30px;
+    position: relative;
+  }
+
+  .logo-tag {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--ff-orange);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #FFD100 0%, #FF6B00 50%, #FF1A1A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 30px rgba(255,107,0,0.4));
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes logoPulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255,107,0,0.4)); }
+    50% { filter: drop-shadow(0 0 40px rgba(255,107,0,0.8)); }
+  }
+
+  .logo span { 
+    background: linear-gradient(135deg, #FF1A1A, #FF6B00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+  }
+
+  /* FPS Meter */
+  .fps-meter {
+    background: var(--ff-card);
+    border: 1px solid var(--ff-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fps-meter::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ff-orange), var(--ff-yellow), var(--ff-orange), transparent);
+    animation: scanLine 2s linear infinite;
+  }
+
+  @keyframes scanLine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .fps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .fps-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 2px;
+  }
+
+  .fps-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #00FF88;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00FF88;
+    animation: blink 1.5s ease-in-out infinite;
+    box-shadow: 0 0 10px #00FF88;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .fps-display {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .fps-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--ff-yellow);
+    text-shadow: var(--glow-yellow);
+    transition: all 0.3s;
+  }
+
+  .fps-unit {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    color: var(--ff-orange);
+    letter-spacing: 4px;
+    margin-top: -4px;
+  }
+
+  /* Progress bar */
+  .fps-bar-wrap {
+    margin-top: 16px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .fps-bar {
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #FF1A1A, #FF6B00, #FFD100, #00FF88);
+    width: 30%;
+    transition: width 1s ease;
+    position: relative;
+  }
+
+  .fps-bar::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 8px white;
+  }
+
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    background: var(--ff-card);
+    border: 1px solid var(--ff-border);
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--ff-orange);
+  }
+
+  .stat-card .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .stat-card .stat-label {
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .stat-card .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ff-yellow);
+    margin-top: 2px;
+  }
+
+  .stat-card .stat-unit {
+    font-size: 11px;
+    color: #555;
+  }
+
+  /* Toggle switches */
+  .optimizations {
+    background: var(--ff-card);
+    border: 1px solid var(--ff-border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--ff-orange);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .opt-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .opt-item:last-child { border-bottom: none; }
+
+  .opt-info {
+    flex: 1;
+  }
+
+  .opt-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #eee;
+  }
+
+  .opt-desc {
+    font-size: 12px;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  .opt-gain {
+    font-size: 11px;
+    color: #00FF88;
+    font-weight: 600;
+  }
+
+  /* Toggle */
+  .toggle {
+    width: 48px;
+    height: 26px;
+    border-radius: 13px;
+    background: #222;
+    border: 1px solid #333;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .toggle.on {
+    background: linear-gradient(135deg, var(--ff-orange), var(--ff-yellow));
+    border-color: var(--ff-orange);
+    box-shadow: var(--glow-orange);
+  }
+
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  .toggle.on::after {
+    transform: translateX(22px);
+  }
+
+  /* Boost button */
+  .boost-section {
+    margin-bottom: 20px;
+  }
+
+  .boost-btn {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #FF6B00 0%, #FF1A1A 50%, #FF6B00 100%);
+    background-size: 200% 100%;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    box-shadow: 0 4px 30px rgba(255,107,0,0.4);
+    animation: btnGradient 3s linear infinite;
+  }
+
+  @keyframes btnGradient {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  .boost-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  }
+
+  .boost-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(255,107,0,0.7);
+  }
+
+  .boost-btn:active {
+    transform: translateY(0);
+  }
+
+  .boost-btn.boosting {
+    animation: btnGradient 0.5s linear infinite, btnPulse 0.5s ease-in-out infinite;
+  }
+
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 4px 30px rgba(255,107,0,0.4); }
+    50% { box-shadow: 0 4px 60px rgba(255,107,0,1); }
+  }
+
+  /* Preset buttons */
+  .presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .preset-btn {
+    background: var(--ff-card);
+    border: 1px solid var(--ff-border);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+  }
+
+  .preset-btn:hover, .preset-btn.active {
+    border-color: var(--ff-orange);
+    background: rgba(255,107,0,0.1);
+    box-shadow: var(--glow-orange);
+  }
+
+  .preset-btn .preset-icon { font-size: 24px; margin-bottom: 4px; }
+  .preset-btn .preset-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #aaa;
+  }
+  .preset-btn.active .preset-name { color: var(--ff-orange); }
+
+  /* Bottom notice */
+  .notice {
+    text-align: center;
+    font-size: 11px;
+    color: #333;
+    padding: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: linear-gradient(135deg, var(--ff-orange), var(--ff-yellow));
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    box-shadow: var(--glow-orange);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">⚡ BOOST ATIVADO!</div>
+
+<div class="container">
+  <div class="header">
+    <div class="logo-tag">▸ GAME LAUNCHER ◂</div>
+    <div class="logo">FF<span>BOOST</span></div>
+    <div class="version-badge">PRO v3.0</div>
+  </div>
+
+  <!-- FPS Meter -->
+  <div class="fps-meter">
+    <div class="fps-header">
+      <div class="fps-label">FPS ATUAL</div>
+      <div class="fps-status"><span class="status-dot"></span> MONITORANDO</div>
+    </div>
+    <div class="fps-display">
+      <div class="fps-number" id="fpsNum">32</div>
+      <div class="fps-unit">FPS</div>
+    </div>
+    <div class="fps-bar-wrap">
+      <div class="fps-bar" id="fpsBar"></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="cards-grid">
+    <div class="stat-card">
+      <div class="icon">🔥</div>
+      <div class="stat-label">CPU</div>
+      <div class="stat-value" id="cpuVal">78</div>
+      <div class="stat-unit">% uso</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">💾</div>
+      <div class="stat-label">RAM</div>
+      <div class="stat-value" id="ramVal">2.1</div>
+      <div class="stat-unit">GB livre</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">📶</div>
+      <div class="stat-label">PING</div>
+      <div class="stat-value" id="pingVal">48</div>
+      <div class="stat-unit">ms</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">🌡️</div>
+      <div class="stat-label">TEMP</div>
+      <div class="stat-value" id="tempVal">62</div>
+      <div class="stat-unit">°C</div>
+    </div>
+  </div>
+
+  <!-- Preset modes -->
+  <div class="presets">
+    <div class="preset-btn" onclick="setPreset(this, 'eco')">
+      <div class="preset-icon">🍃</div>
+      <div class="preset-name">ECO</div>
+    </div>
+    <div class="preset-btn active" onclick="setPreset(this, 'balance')">
+      <div class="preset-icon">⚡</div>
+      <div class="preset-name">BALANCED</div>
+    </div>
+    <div class="preset-btn" onclick="setPreset(this, 'extreme')">
+      <div class="preset-icon">💥</div>
+      <div class="preset-name">EXTREME</div>
+    </div>
+  </div>
+
+  <!-- Optimizations -->
+  <div class="optimizations">
+    <div class="section-title">⚙ OTIMIZAÇÕES</div>
+
+    <div class="opt-item">
+      <div class="opt-info">
+        <div class="opt-name">Liberar RAM</div>
+        <div class="opt-desc">Fecha apps em segundo plano</div>
+        <div class="opt-gain">+8 FPS</div>
+      </div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="opt-item">
+      <div class="opt-info">
+        <div class="opt-name">Modo Alta Performance</div>
+        <div class="opt-desc">Prioridade máxima para o jogo</div>
+        <div class="opt-gain">+12 FPS</div>
+      </div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="opt-item">
+      <div class="opt-info">
+        <div class="opt-name">Reduzir Ping</div>
+        <div class="opt-desc">Otimiza rota de rede</div>
+        <div class="opt-gain">-20ms</div>
+      </div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="opt-item">
+      <div class="opt-info">
+        <div class="opt-name">GPU Booster</div>
+        <div class="opt-desc">Aumenta clock gráfico</div>
+        <div class="opt-gain">+15 FPS</div>
+      </div>
+      <div class="toggle" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="opt-item">
+      <div class="opt-info">
+        <div class="opt-name">Anti-Lag</div>
+        <div class="opt-desc">Remove microtravamentos</div>
+        <div class="opt-gain">Smooth</div>
+      </div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+    </div>
+  </div>
+
+  <!-- Boost Button -->
+  <div class="boost-section">
+    <button class="boost-btn" id="boostBtn" onclick="activateBoost()">
+      🚀 INICIAR FREE FIRE
+    </button>
+  </div>
+
+  <div class="notice">⚠ APP CONCEITO · APENAS DEMONSTRAÇÃO VISUAL ⚠</div>
+</div>
+
+<script>
+  let boosted = false;
+  let targetFPS = 32;
+  let currentFPS = 32;
+
+  const presets = {
+    eco:     { fps: 40, cpu: 60, ram: 2.8, ping: 55, temp: 52 },
+    balance: { fps: 60, cpu: 75, ram: 2.1, ping: 45, temp: 62 },
+    extreme: { fps: 90, cpu: 92, ram: 1.4, ping: 28, temp: 74 },
+  };
+
+  let currentPreset = presets.balance;
+
+  function setPreset(el, name) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentPreset = presets[name];
+    if (!boosted) targetFPS = currentPreset.fps * 0.5 | 0;
+  }
+
+  function activateBoost() {
+    const btn = document.getElementById('boostBtn');
+    const toast = document.getElementById('toast');
+    
+    boosted = true;
+    btn.classList.add('boosting');
+    btn.textContent = '⚡ OTIMIZANDO...';
+    btn.disabled = true;
+
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+
+    targetFPS = currentPreset.fps;
+
+    setTimeout(() => {
+      btn.classList.remove('boosting');
+      btn.textContent = '✅ FREE FIRE INICIANDO...';
+      document.getElementById('cpuVal').textContent = currentPreset.cpu;
+      document.getElementById('pingVal').textContent = currentPreset.ping;
+      document.getElementById('tempVal').textContent = currentPreset.temp;
+      document.getElementById('ramVal').textContent = currentPreset.ram.toFixed(1);
+    }, 2000);
+
+    setTimeout(() => {
+      btn.textContent = '🚀 INICIAR FREE FIRE';
+      btn.disabled = false;
+      boosted = false;
+    }, 5000);
+  }
+
+  // Animate FPS counter
+  setInterval(() => {
+    const jitter = Math.random() * 6 - 3;
+    currentFPS += (targetFPS - currentFPS) * 0.08 + jitter;
+    currentFPS = Math.max(10, Math.min(120, currentFPS));
+
+    const fps = Math.round(currentFPS);
+    document.getElementById('fpsNum').textContent = fps;
+
+    const pct = Math.min((fps / 120) * 100, 100);
+    document.getElementById('fpsBar').style.width = pct + '%';
+
+    // Change color based on fps
+    const el = document.getElementById('fpsNum');
+    if (fps < 30) el.style.color = '#FF1A1A';
+    else if (fps < 60) el.style.color = '#FFD100';
+    else el.style.color = '#00FF88';
+  }, 400);
+
+  // Random stat fluctuation
+  setInterval(() => {
+    if (!boosted) {
+      const cpuBase = currentPreset.cpu;
+      document.getElementById('cpuVal').textContent = (cpuBase + Math.round(Math.random() * 6 - 3));
+    }
+  }, 1500);
+</script>
+</body>
+</html>
